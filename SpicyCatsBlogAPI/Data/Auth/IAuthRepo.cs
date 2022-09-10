@@ -6,7 +6,7 @@ namespace SpicyCatsBlogAPI.Data.Auth
     {
         Task<User> GetUserAsync(string userName);
 
-        Task<int> GetUserId(string userName);
+        Task<string> GetUserId(string userName);
 
         Task AddUserAsync(User user);
 
