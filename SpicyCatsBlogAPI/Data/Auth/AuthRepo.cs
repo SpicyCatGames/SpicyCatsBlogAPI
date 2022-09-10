@@ -53,5 +53,10 @@ namespace SpicyCatsBlogAPI.Data.Auth
             }
             return false;
         }
+
+        public void UpdateUser(User user)
+        {
+            _ctx.Users.Update(user);
+        }
     }
 }

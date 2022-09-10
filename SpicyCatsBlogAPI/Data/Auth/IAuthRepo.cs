@@ -10,6 +10,8 @@ namespace SpicyCatsBlogAPI.Data.Auth
 
         Task<bool> AddUserAsync(User user);
 
+        void UpdateUser(User user);
+
         Task<bool> SaveChangesAsync();
     }
 }
