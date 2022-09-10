@@ -26,10 +26,11 @@ namespace SpicyCatsBlogAPI.Controllers
             _repo = repo;
         }
 
-        //[HttpGet, Authorize]
+        // None of this method without [Authorize]
+        //[HttpGet("GetName"), Authorize]
         //public ActionResult<string> GetMe()
         //{
-        //    var userName = _userService.GetMyName();
+        //    var userName = _userService.GetName();
         //    return Ok(userName);
 
         //    //return Ok(
@@ -90,10 +91,15 @@ namespace SpicyCatsBlogAPI.Controllers
             return Ok(token);
         }
 
-        [HttpPost("refresh-token")]
+        [HttpPost("refresh-token"), Authorize]
         public async Task<ActionResult<string>> RefreshToken()
         {
             var user = await GetUserFromDb(_userService.GetName());
+
+            if (user == null)
+            {
+                return Unauthorized("User with token does not exist in database");
+            }
 
             var refreshToken = Request.Cookies["refreshToken"];
 
