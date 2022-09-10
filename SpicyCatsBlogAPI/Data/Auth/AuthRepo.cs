@@ -12,9 +12,16 @@ namespace SpicyCatsBlogAPI.Data.Auth
             _ctx = appDbContext;
         }
 
-        public async Task AddUserAsync(User user)
+        public async Task<bool> AddUserAsync(User user)
         {
+            // user with the given username already exists
+            if ((await GetUserAsync(user.Username)) != null)
+            {
+                return false;
+            }
+
             await _ctx.Users.AddAsync(user);
+            return true;
         }
 
         public async Task<User> GetUserAsync(string userName)
