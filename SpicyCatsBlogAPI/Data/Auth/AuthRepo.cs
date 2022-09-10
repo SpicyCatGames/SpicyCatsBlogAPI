@@ -26,7 +26,15 @@ namespace SpicyCatsBlogAPI.Data.Auth
 
         public async Task<User> GetUserAsync(string userName)
         {
+            // get users without casematching with db side eval
             var nameMatchedUsers = await _ctx.Users.Where(user => user.Username.Equals(userName)).ToListAsync();
+
+            if (nameMatchedUsers == null)
+            {
+                return null;
+            }
+
+            // casematching with client side eval
             var caseMathcedUser = nameMatchedUsers.First(user => user.Username.Equals(userName));
 
             return caseMathcedUser;
