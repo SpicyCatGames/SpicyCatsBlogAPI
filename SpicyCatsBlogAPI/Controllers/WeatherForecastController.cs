@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using SpicyCatsBlogAPI.Models;
 
 namespace SpicyCatsBlogAPI.Controllers
 {

@@ -1,4 +1,4 @@
-namespace SpicyCatsBlogAPI
+namespace SpicyCatsBlogAPI.Models
 {
     public class WeatherForecast
     {
