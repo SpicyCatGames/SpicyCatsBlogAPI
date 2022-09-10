@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using SpicyCatsBlogAPI.Data.Auth;
 using SpicyCatsBlogAPI.Models.Auth;
 using SpicyCatsBlogAPI.Services.UserService;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,47 +15,64 @@ namespace SpicyCatsBlogAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        public static User user = new User();
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
+        private readonly IAuthRepo _repo;
 
-        public AuthController(IConfiguration configuration, IUserService userService)
+        public AuthController(IConfiguration configuration, IUserService userService, IAuthRepo repo)
         {
             _configuration = configuration;
             _userService = userService;
+            _repo = repo;
         }
 
-        [HttpGet, Authorize]
-        public ActionResult<string> GetMe()
-        {
-            var userName = _userService.GetMyName();
-            return Ok(userName);
+        //[HttpGet, Authorize]
+        //public ActionResult<string> GetMe()
+        //{
+        //    var userName = _userService.GetMyName();
+        //    return Ok(userName);
 
-            //return Ok(
-            //    new
-            //    {
-            //        name1 = User.Identity.Name,
-            //        name = User.FindFirstValue(ClaimTypes.Name),
-            //        role = User.FindFirstValue(ClaimTypes.Role)
-            //    });
-        }
+        //    //return Ok(
+        //    //    new
+        //    //    {
+        //    //        name1 = User.Identity.Name,
+        //    //        name = User.FindFirstValue(ClaimTypes.Name),
+        //    //        role = User.FindFirstValue(ClaimTypes.Role)
+        //    //    });
+        //}
 
         [HttpPost("register")]
         public async Task<ActionResult<User>> Register(UserDto request)
         {
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
-            user.Username = request.Username;
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+            var user = new User
+            {
+                Username = request.Username,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Role = Roles.User
+            };
 
-            return Ok(user);
+            bool registrationSuccessful = await _repo.AddUserAsync(user);
+
+            if (!registrationSuccessful)
+            {
+                return BadRequest("username already exists");
+            }
+            if (await _repo.SaveChangesAsync())
+            {
+                return Ok();
+            }
+            return BadRequest("registration failed");
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login(UserDto request)
         {
-            if (user.Username != request.Username)
+            var user = await GetUserFromDb(request.Username);
+
+            if (!user.Username.Equals(request.Username))
             {
                 return BadRequest("User not found");
             }
@@ -67,7 +85,7 @@ namespace SpicyCatsBlogAPI.Controllers
             string token = CreateToken(user);
 
             var refreshToken = GenerateRefreshToken();
-            SetRefreshToken(refreshToken);
+            await SetRefreshToken(user, refreshToken);
 
             return Ok(token);
         }
@@ -75,6 +93,8 @@ namespace SpicyCatsBlogAPI.Controllers
         [HttpPost("refresh-token")]
         public async Task<ActionResult<string>> RefreshToken()
         {
+            var user = await GetUserFromDb(_userService.GetName());
+
             var refreshToken = Request.Cookies["refreshToken"];
 
             if (!user.RefreshToken.Equals(refreshToken))
@@ -88,7 +108,7 @@ namespace SpicyCatsBlogAPI.Controllers
 
             string token = CreateToken(user);
             var newRefreshToken = GenerateRefreshToken();
-            SetRefreshToken(newRefreshToken);
+            await SetRefreshToken(user, newRefreshToken);
 
             return Ok(token);
         }
@@ -105,7 +125,7 @@ namespace SpicyCatsBlogAPI.Controllers
             return refreshToken;
         }
 
-        private void SetRefreshToken(RefreshToken newRefreshToken)
+        private async Task SetRefreshToken(User user, RefreshToken newRefreshToken)
         {
             var cookieOptions = new CookieOptions
             {
@@ -118,6 +138,9 @@ namespace SpicyCatsBlogAPI.Controllers
             user.RefreshToken = newRefreshToken.Token;
             user.TokenCreated = newRefreshToken.Created;
             user.TokenExpires = newRefreshToken.Expires;
+
+            _repo.UpdateUser(user);
+            await _repo.SaveChangesAsync();
         }
 
         private string CreateToken(User user)
@@ -125,7 +148,7 @@ namespace SpicyCatsBlogAPI.Controllers
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, "Admin")
+                new Claim(ClaimTypes.Role, user.Role.ToString())
             };
 
             var key = new SymmetricSecurityKey(
@@ -164,5 +187,8 @@ namespace SpicyCatsBlogAPI.Controllers
                 return computedHash.SequenceEqual(passwordHash);
             }
         }
+
+        private async Task<User> GetUserFromDb(string username) =>
+            await _repo.GetUserAsync(username);
     }
 }
