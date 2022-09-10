@@ -29,13 +29,13 @@ namespace SpicyCatsBlogAPI.Data.Auth
             // get users without casematching with db side eval
             var nameMatchedUsers = await _ctx.Users.Where(user => user.Username.Equals(userName)).ToListAsync();
 
-            if (nameMatchedUsers == null)
+            if (nameMatchedUsers.Count == 0)
             {
                 return null;
             }
 
             // casematching with client side eval
-            var caseMathcedUser = nameMatchedUsers.First(user => user.Username.Equals(userName));
+            var caseMathcedUser = nameMatchedUsers.FirstOrDefault(user => user.Username.Equals(userName), null);
 
             return caseMathcedUser;
         }
