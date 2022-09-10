@@ -12,12 +12,22 @@ namespace SpicyCatsBlogAPI.Services.UserService
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public string GetMyName()
+        public string GetName()
         {
             var result = string.Empty;
             if (_httpContextAccessor.HttpContext != null)
             {
                 result = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+            }
+            return result;
+        }
+
+        public string GetRole()
+        {
+            var result = string.Empty;
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                result = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Role);
             }
             return result;
         }
