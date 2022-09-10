@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SpicyCatsBlogAPI.Data;
+using SpicyCatsBlogAPI.Data.Auth;
 using SpicyCatsBlogAPI.Services.UserService;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
@@ -17,6 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value
     );
 });
+builder.Services.AddScoped<IAuthRepo, AuthRepo>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
