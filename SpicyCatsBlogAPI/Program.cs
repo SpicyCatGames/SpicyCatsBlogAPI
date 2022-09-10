@@ -1,7 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using SpicyCatsBlogAPI.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlite(
+        builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value
+    );
+});
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
