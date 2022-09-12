@@ -73,7 +73,7 @@ namespace SpicyCatsBlogAPI.Controllers
         {
             var user = await GetUserFromDb(request.Username);
 
-            if (!user.Username.Equals(request.Username))
+            if (user == null || !user.Username.Equals(request.Username))
             {
                 return BadRequest("User not found");
             }
