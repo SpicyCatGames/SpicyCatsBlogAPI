@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SpicyCatsBlogAPI.Data;
 using SpicyCatsBlogAPI.Data.Auth;
+using SpicyCatsBlogAPI.Models.Auth;
 using SpicyCatsBlogAPI.Services.UserService;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
@@ -52,7 +53,7 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(
         builder =>
         {
-            builder.WithOrigins("http://localhost:3000", "https://spicycatgames.github.io")
+            builder.WithOrigins("https://localhost:7190/", "http://localhost:3000", "https://spicycatgames.github.io")
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
         });
@@ -76,6 +77,20 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+try
+{
+    var scope = app.Services.CreateScope();
+    var ctx = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    if (ctx.Database.GetPendingMigrations().Any())
+    {
+        ctx.Database.Migrate();
+    }
+}
+catch (Exception e)
+{
+    Console.WriteLine(e.Message);
+}
 
 app.Run();
 
