@@ -47,6 +47,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         }
     );
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000", "https://spicycatgames.github.io")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+        });
+});
 
 var app = builder.Build();
 
@@ -56,6 +66,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 
