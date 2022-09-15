@@ -91,21 +91,21 @@ namespace SpicyCatsBlogAPI.Controllers
             return Ok(token);
         }
 
-        [HttpPost("refresh-token"), Authorize]
+        [HttpPost("refresh-token")]
         public async Task<ActionResult<string>> RefreshToken()
         {
-            var user = await GetUserFromDb(_userService.GetName());
+            var refreshToken = Request.Cookies["refreshToken"];
+
+            if (RefreshToken == null || refreshToken.Equals(string.Empty))
+            {
+                return Unauthorized("Invalid Refresh Token");
+            }
+
+            var user = await _repo.GetUserbyRefreshAsync(refreshToken);
 
             if (user == null)
             {
                 return Unauthorized("User with token does not exist in database");
-            }
-
-            var refreshToken = Request.Cookies["refreshToken"];
-
-            if (!user.RefreshToken.Equals(refreshToken))
-            {
-                return Unauthorized("Invalid Refresh Token");
             }
             else if (user.TokenExpires < DateTime.Now)
             {
