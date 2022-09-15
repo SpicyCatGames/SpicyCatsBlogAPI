@@ -142,7 +142,7 @@ namespace SpicyCatsBlogAPI.Controllers
         }
 
         [HttpGet("logout")]
-        private ActionResult Logout()
+        public ActionResult Logout()
         {
             // TODO delete from server when hosted on a paid hosting service
             Response.Cookies.Delete(REFRESH_TOKEN, _cookieOptions);
