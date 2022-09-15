@@ -143,7 +143,10 @@ namespace SpicyCatsBlogAPI.Controllers
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true, //httponly so that js can't access it
-                Expires = newRefreshToken.Expires
+                Expires = newRefreshToken.Expires,
+                IsEssential = true,
+                SameSite = SameSiteMode.None,
+                Secure = true
             };
 
             Response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
