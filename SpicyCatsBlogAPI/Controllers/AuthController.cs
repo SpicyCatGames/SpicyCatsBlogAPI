@@ -96,7 +96,7 @@ namespace SpicyCatsBlogAPI.Controllers
         {
             var refreshToken = Request.Cookies["refreshToken"];
 
-            if (RefreshToken == null || refreshToken.Equals(string.Empty))
+            if (refreshToken == null || refreshToken.Equals(string.Empty))
             {
                 return Unauthorized("Invalid Refresh Token");
             }
