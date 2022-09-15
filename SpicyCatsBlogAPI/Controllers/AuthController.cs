@@ -15,9 +15,24 @@ namespace SpicyCatsBlogAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        private const string REFRESH_TOKEN = "refreshToken";
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
         private readonly IAuthRepo _repo;
+
+        private CookieOptions _cookieOptions
+        {
+            get
+            {
+                return new CookieOptions
+                {
+                    HttpOnly = true, //httponly so that js can't access it
+                    IsEssential = true,
+                    SameSite = SameSiteMode.None,
+                    Secure = true
+                };
+            }
+        }
 
         public AuthController(IConfiguration configuration, IUserService userService, IAuthRepo repo)
         {
@@ -94,7 +109,7 @@ namespace SpicyCatsBlogAPI.Controllers
         [HttpPost("refresh-token")]
         public async Task<ActionResult<UserDto>> RefreshToken()
         {
-            var refreshToken = Request.Cookies["refreshToken"];
+            var refreshToken = Request.Cookies[REFRESH_TOKEN];
 
             if (refreshToken == null || refreshToken.Equals(string.Empty))
             {
@@ -140,16 +155,10 @@ namespace SpicyCatsBlogAPI.Controllers
 
         private async Task SetRefreshToken(User user, RefreshToken newRefreshToken)
         {
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true, //httponly so that js can't access it
-                Expires = newRefreshToken.Expires,
-                IsEssential = true,
-                SameSite = SameSiteMode.None,
-                Secure = true
-            };
+            var cookieOptions = _cookieOptions;
+            cookieOptions.Expires = newRefreshToken.Expires;
 
-            Response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
+            Response.Cookies.Append(REFRESH_TOKEN, newRefreshToken.Token, cookieOptions);
 
             user.RefreshToken = newRefreshToken.Token;
             user.TokenCreated = newRefreshToken.Created;
