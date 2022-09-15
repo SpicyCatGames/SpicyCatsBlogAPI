@@ -40,6 +40,22 @@ namespace SpicyCatsBlogAPI.Data.Auth
             return caseMathcedUser;
         }
 
+        public async Task<User> GetUserbyRefreshAsync(string refreshToken)
+        {
+            // get users without casematching with db side eval
+            var users = await _ctx.Users.Where(user => user.RefreshToken.Equals(refreshToken)).ToListAsync();
+
+            if (users.Count == 0)
+            {
+                return null;
+            }
+
+            // casematching with client side eval
+            var caseMathcedUser = users.FirstOrDefault(user => user.RefreshToken.Equals(refreshToken), null);
+
+            return caseMathcedUser;
+        }
+
         public async Task<string> GetUserId(string userName)
         {
             return (await this.GetUserAsync(userName)).Id;

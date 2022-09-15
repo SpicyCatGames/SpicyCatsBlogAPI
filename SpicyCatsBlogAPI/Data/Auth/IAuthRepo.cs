@@ -13,5 +13,7 @@ namespace SpicyCatsBlogAPI.Data.Auth
         void UpdateUser(User user);
 
         Task<bool> SaveChangesAsync();
+
+        Task<User> GetUserbyRefreshAsync(string refreshToken);
     }
 }
