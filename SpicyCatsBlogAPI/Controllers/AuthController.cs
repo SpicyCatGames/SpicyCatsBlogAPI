@@ -92,7 +92,7 @@ namespace SpicyCatsBlogAPI.Controllers
         }
 
         [HttpPost("refresh-token")]
-        public async Task<ActionResult<string>> RefreshToken()
+        public async Task<ActionResult<UserDto>> RefreshToken()
         {
             var refreshToken = Request.Cookies["refreshToken"];
 
@@ -114,9 +114,16 @@ namespace SpicyCatsBlogAPI.Controllers
 
             string token = CreateToken(user);
             var newRefreshToken = GenerateRefreshToken();
+            UserDto dto = new UserDto
+            {
+                Username = user.Username,
+                Role = user.Role.ToString(),
+                JWT = token
+            };
+
             await SetRefreshToken(user, newRefreshToken);
 
-            return Ok(token);
+            return Ok(dto);
         }
 
         private RefreshToken GenerateRefreshToken()
