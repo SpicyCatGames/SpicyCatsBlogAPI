@@ -98,18 +98,18 @@ namespace SpicyCatsBlogAPI.Controllers
 
             if (refreshToken == null || refreshToken.Equals(string.Empty))
             {
-                return Unauthorized("Invalid Refresh Token");
+                return BadRequest("Invalid Refresh Token");
             }
 
             var user = await _repo.GetUserbyRefreshAsync(refreshToken);
 
             if (user == null)
             {
-                return Unauthorized("User with token does not exist in database");
+                return BadRequest("User with token does not exist in database");
             }
             else if (user.TokenExpires < DateTime.Now)
             {
-                return Unauthorized("Refresh Token Expired");
+                return BadRequest("Refresh Token Expired");
             }
 
             string token = CreateToken(user);
