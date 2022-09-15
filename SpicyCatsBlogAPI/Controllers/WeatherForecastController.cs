@@ -5,8 +5,8 @@ using SpicyCatsBlogAPI.Models.Auth;
 
 namespace SpicyCatsBlogAPI.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -21,8 +21,20 @@ namespace SpicyCatsBlogAPI.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast"), Authorize(Roles = "User")]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpGet("WeatherWAuth"), Authorize]
+        public IEnumerable<WeatherForecast> WeatherWAuth()
+        {
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+                Date = DateTime.Now.AddDays(index),
+                TemperatureC = Random.Shared.Next(-20, 55),
+                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+            })
+            .ToArray();
+        }
+
+        [HttpGet("WeatherWOAuth")]
+        public IEnumerable<WeatherForecast> WeatherWOAuth()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
