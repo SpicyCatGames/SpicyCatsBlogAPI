@@ -96,3 +96,4 @@ app.Run();
 
 // authorization header to requests on client side
 // https://jwt.io/
+// http://sadmandiu.somee.com/.well-known/pki-validation/DEBF1C3ED4B589E3CE4671B97A915A79.txt
