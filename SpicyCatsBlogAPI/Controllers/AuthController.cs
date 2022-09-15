@@ -141,6 +141,14 @@ namespace SpicyCatsBlogAPI.Controllers
             return Ok(dto);
         }
 
+        [HttpGet("logout")]
+        private ActionResult Logout()
+        {
+            // TODO delete from server when hosted on a paid hosting service
+            Response.Cookies.Delete(REFRESH_TOKEN, _cookieOptions);
+            return Ok();
+        }
+
         private RefreshToken GenerateRefreshToken()
         {
             var refreshToken = new RefreshToken
