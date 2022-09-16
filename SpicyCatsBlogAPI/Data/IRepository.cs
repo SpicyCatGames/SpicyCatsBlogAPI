@@ -3,7 +3,7 @@ using SpicyCatsBlogAPI.Models.Content;
 
 namespace SpicyCatsBlogAPI.Data
 {
-    public interface IAuthRepo
+    public interface IRepository
     {
         // user
         Task<User> GetUserAsync(string userName);

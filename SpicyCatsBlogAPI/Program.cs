@@ -18,7 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value
     );
 });
-builder.Services.AddScoped<IAuthRepo, AuthRepo>();
+builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

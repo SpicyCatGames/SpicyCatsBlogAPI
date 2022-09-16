@@ -4,11 +4,11 @@ using SpicyCatsBlogAPI.Models.Content;
 
 namespace SpicyCatsBlogAPI.Data
 {
-    public class AuthRepo : IAuthRepo
+    public class Repository : IRepository
     {
         private readonly AppDbContext _ctx;
 
-        public AuthRepo(AppDbContext appDbContext)
+        public Repository(AppDbContext appDbContext)
         {
             _ctx = appDbContext;
         }

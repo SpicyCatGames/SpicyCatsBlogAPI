@@ -18,7 +18,7 @@ namespace SpicyCatsBlogAPI.Controllers
         private const string REFRESH_TOKEN = "refreshToken";
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
-        private readonly IAuthRepo _repo;
+        private readonly IRepository _repo;
 
         private CookieOptions _cookieOptions
         {
@@ -34,7 +34,7 @@ namespace SpicyCatsBlogAPI.Controllers
             }
         }
 
-        public AuthController(IConfiguration configuration, IUserService userService, IAuthRepo repo)
+        public AuthController(IConfiguration configuration, IUserService userService, IRepository repo)
         {
             _configuration = configuration;
             _userService = userService;
