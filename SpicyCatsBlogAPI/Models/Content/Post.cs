@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SpicyCatsBlogAPI.Models.Auth;
+using System.ComponentModel.DataAnnotations;
 
 namespace SpicyCatsBlogAPI.Models.Content
 {
@@ -16,5 +17,7 @@ namespace SpicyCatsBlogAPI.Models.Content
         public string Category { get; set; } = "";
 
         public DateTime Created { get; set; } = DateTime.Now;
+
+        public User User { get; set; }
     }
 }
