@@ -8,6 +8,8 @@ namespace SpicyCatsBlogAPI.Data
         // user
         Task<User> GetUserAsync(string userName);
 
+        Task<User> GetUserWPostsAsync(string username);
+
         Task<string> GetUserId(string userName);
 
         Task<bool> AddUserAsync(User user);

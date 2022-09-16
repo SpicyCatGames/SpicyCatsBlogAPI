@@ -41,6 +41,26 @@ namespace SpicyCatsBlogAPI.Data
             return caseMathcedUser;
         }
 
+        public async Task<User> GetUserWPostsAsync(string userName)
+        {
+            // get users without casematching with db side eval
+            var nameMatchedUsers =
+                await _ctx.Users
+                .Where(user => user.Username.Equals(userName))
+                .Include(u => u.Posts)
+                .ToListAsync();
+
+            if (nameMatchedUsers.Count == 0)
+            {
+                return null;
+            }
+
+            // casematching with client side eval
+            var caseMathcedUser = nameMatchedUsers.FirstOrDefault(user => user.Username.Equals(userName), null);
+
+            return caseMathcedUser;
+        }
+
         public async Task<User> GetUserbyRefreshAsync(string refreshToken)
         {
             // get users without casematching with db side eval
