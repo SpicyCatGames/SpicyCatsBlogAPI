@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SpicyCatsBlogAPI.Models.Auth;
+using SpicyCatsBlogAPI.Models.Content;
 
 namespace SpicyCatsBlogAPI.Data
 {
@@ -22,6 +23,11 @@ namespace SpicyCatsBlogAPI.Data
 
             await _ctx.Users.AddAsync(user);
             return true;
+        }
+
+        public Task<Post> GetPostsAsync(int pageNum, int postsPerPage)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<User> GetUserAsync(string userName)
