@@ -77,7 +77,7 @@ namespace SpicyCatsBlogAPI.Data
         }
 
         // posts
-        public Task<List<Post>> GetPostsAsync(int pageNum, int postsPerPage)
+        public Task<List<Post>> GetPostsAsync(int pageNum, int postsPerPage, string category)
         {
             throw new NotImplementedException();
         }
