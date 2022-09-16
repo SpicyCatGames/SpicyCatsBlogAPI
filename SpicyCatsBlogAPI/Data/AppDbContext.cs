@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using SpicyCatsBlogAPI.Models.Auth;
 
 namespace SpicyCatsBlogAPI.Data
@@ -12,6 +13,15 @@ namespace SpicyCatsBlogAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            // primary key value generation
+            var keysProperties = modelBuilder.Model.GetEntityTypes().Select(x => x.FindPrimaryKey()).SelectMany(x => x.Properties);
+            foreach (var property in keysProperties)
+            {
+                property.ValueGenerated = ValueGenerated.OnAdd;
+            }
+
+            // enum to string
             modelBuilder
                 .Entity<User>()
                 .Property(e => e.Role)
