@@ -1,9 +1,11 @@
 ﻿using SpicyCatsBlogAPI.Models.Auth;
+using SpicyCatsBlogAPI.Models.Content;
 
-namespace SpicyCatsBlogAPI.Data.Auth
+namespace SpicyCatsBlogAPI.Data
 {
     public interface IAuthRepo
     {
+        // user
         Task<User> GetUserAsync(string userName);
 
         Task<string> GetUserId(string userName);
@@ -15,5 +17,8 @@ namespace SpicyCatsBlogAPI.Data.Auth
         Task<bool> SaveChangesAsync();
 
         Task<User> GetUserbyRefreshAsync(string refreshToken);
+
+        // posts
+        Task<Post> GetPostsAsync(int pageNum, int postsPerPage);
     }
 }

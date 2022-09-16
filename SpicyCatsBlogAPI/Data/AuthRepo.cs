@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SpicyCatsBlogAPI.Models.Auth;
 
-namespace SpicyCatsBlogAPI.Data.Auth
+namespace SpicyCatsBlogAPI.Data
 {
     public class AuthRepo : IAuthRepo
     {
@@ -15,7 +15,7 @@ namespace SpicyCatsBlogAPI.Data.Auth
         public async Task<bool> AddUserAsync(User user)
         {
             // user with the given username already exists
-            if ((await GetUserAsync(user.Username)) != null)
+            if (await GetUserAsync(user.Username) != null)
             {
                 return false;
             }
@@ -58,7 +58,7 @@ namespace SpicyCatsBlogAPI.Data.Auth
 
         public async Task<string> GetUserId(string userName)
         {
-            return (await this.GetUserAsync(userName)).Id;
+            return (await GetUserAsync(userName)).Id;
         }
 
         public async Task<bool> SaveChangesAsync()

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using SpicyCatsBlogAPI.Data.Auth;
+using SpicyCatsBlogAPI.Data;
 using SpicyCatsBlogAPI.Models.Auth;
 using SpicyCatsBlogAPI.Services.UserService;
 using System.IdentityModel.Tokens.Jwt;
