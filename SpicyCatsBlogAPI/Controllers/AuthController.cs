@@ -78,7 +78,11 @@ namespace SpicyCatsBlogAPI.Controllers
             }
             if (await _repo.SaveChangesAsync())
             {
-                return Ok();
+                return Ok(new UserDto
+                {
+                    Username = user.Username,
+                    Role = user.Role.ToString()
+                });
             }
             return BadRequest("registration failed");
         }
