@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SpicyCatsBlogAPI.Models.Content;
+using System.ComponentModel.DataAnnotations;
 
 namespace SpicyCatsBlogAPI.Models.Auth
 {
@@ -15,6 +16,8 @@ namespace SpicyCatsBlogAPI.Models.Auth
         public string RefreshToken { get; set; }
         public DateTime TokenCreated { get; set; }
         public DateTime TokenExpires { get; set; }
+
+        public List<Post> Posts { get; set; }
     }
 
     public enum Roles

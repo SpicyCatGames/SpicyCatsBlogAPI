@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using SpicyCatsBlogAPI.Models.Auth;
+using SpicyCatsBlogAPI.Models.Content;
 
 namespace SpicyCatsBlogAPI.Data
 {
@@ -10,6 +11,7 @@ namespace SpicyCatsBlogAPI.Data
         { }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Post> Posts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
