@@ -19,6 +19,8 @@ namespace SpicyCatsBlogAPI.Data
         Task<User> GetUserbyRefreshAsync(string refreshToken);
 
         // posts
-        Task<Post> GetPostsAsync(int pageNum, int postsPerPage);
+        Task<List<Post>> GetPostsAsync(int pageNum, int postsPerPage);
+
+        Task<Post> GetPostAsync(int id);
     }
 }

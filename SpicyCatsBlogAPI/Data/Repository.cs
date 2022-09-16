@@ -25,11 +25,6 @@ namespace SpicyCatsBlogAPI.Data
             return true;
         }
 
-        public Task<Post> GetPostsAsync(int pageNum, int postsPerPage)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<User> GetUserAsync(string userName)
         {
             // get users without casematching with db side eval
@@ -79,6 +74,17 @@ namespace SpicyCatsBlogAPI.Data
         public void UpdateUser(User user)
         {
             _ctx.Users.Update(user);
+        }
+
+        // posts
+        public Task<List<Post>> GetPostsAsync(int pageNum, int postsPerPage)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Post> GetPostAsync(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
