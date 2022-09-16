@@ -30,6 +30,13 @@ namespace SpicyCatsBlogAPI.Data
                 .HasConversion(
                 v => v.ToString(),
                 v => (Roles)Enum.Parse(typeof(Roles), v));
+
+            modelBuilder
+                .Entity<Post>()
+                .Property(e => e.Category)
+                .HasConversion(
+                v => v.ToString(),
+                v => (PostCategory)Enum.Parse(typeof(PostCategory), v));
         }
     }
 }

@@ -14,10 +14,17 @@ namespace SpicyCatsBlogAPI.Models.Content
 
         public string Description { get; set; } = "";
         public string Tags { get; set; } = "";
-        public string Category { get; set; } = "";
+        public PostCategory Category { get; set; }
 
         public DateTime Created { get; set; } = DateTime.Now;
 
         public User User { get; set; }
+    }
+
+    public enum PostCategory
+    {
+        CSharp,
+        JavaScript,
+        Others
     }
 }
