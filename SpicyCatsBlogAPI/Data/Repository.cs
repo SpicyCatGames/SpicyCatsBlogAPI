@@ -91,9 +91,21 @@ namespace SpicyCatsBlogAPI.Data
             return await query.Skip(skipAmout).Take(postsPerPage).ToListAsync();
         }
 
-        public Post GetPostAsync(string id)
+        public Post GetPost(string id)
         {
             return _ctx.Posts.FirstOrDefault(p => p.Id.Equals(id));
+        }
+
+        public int GetPostCount(string category)
+        {
+            var query = _ctx.Posts.AsQueryable();
+
+            if (!String.IsNullOrEmpty(category))
+            {
+                query = query.Where(x => x.Category.Equals(category));
+            }
+
+            return query.Count();
         }
     }
 }

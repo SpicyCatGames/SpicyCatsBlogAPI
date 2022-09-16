@@ -21,6 +21,8 @@ namespace SpicyCatsBlogAPI.Data
         // posts
         Task<List<Post>> GetPostsAsync(int pageNum, int postsPerPage, string category);
 
-        Post GetPostAsync(string id);
+        Post GetPost(string id);
+
+        int GetPostCount(string category);
     }
 }
