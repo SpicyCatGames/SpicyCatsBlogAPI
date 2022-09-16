@@ -77,14 +77,23 @@ namespace SpicyCatsBlogAPI.Data
         }
 
         // posts
-        public Task<List<Post>> GetPostsAsync(int pageNum, int postsPerPage, string category)
+        public async Task<List<Post>> GetPostsAsync(int pageNum, int postsPerPage, string category)
         {
-            throw new NotImplementedException();
+            int skipAmout = postsPerPage * (pageNum - 1);
+
+            var query = _ctx.Posts.AsQueryable();
+
+            if (!String.IsNullOrEmpty(category))
+            {
+                query = query.Where(x => x.Category.Equals(category));
+            }
+
+            return await query.Skip(skipAmout).Take(postsPerPage).ToListAsync();
         }
 
-        public Task<Post> GetPostAsync(int id)
+        public Post GetPostAsync(string id)
         {
-            throw new NotImplementedException();
+            return _ctx.Posts.FirstOrDefault(p => p.Id.Equals(id));
         }
     }
 }
