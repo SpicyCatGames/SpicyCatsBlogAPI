@@ -50,7 +50,7 @@ namespace SpicyCatsBlogAPI.Controllers
         }
 
         [HttpPost("createpost"), Authorize]
-        public async Task<ActionResult> CreatePost(PostDto postDto)
+        public async Task<ActionResult> CreatePost([FromForm] PostDto postDto)
         {
             var user = await _repository.GetUserWPostsAsync(User.FindFirstValue(ClaimTypes.Name));
             Enum.TryParse<PostCategory>(postDto.Category, out var categoryEnum);
