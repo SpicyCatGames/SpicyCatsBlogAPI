@@ -10,6 +10,8 @@ namespace SpicyCatsBlogAPI.Data.FileManager
     {
         FileStream ImageStream(string image);
 
+        FileStream NotFoundImageStream();
+
         Task<string> SaveImage(IFormFile image);
 
         bool RemoveImage(string image);

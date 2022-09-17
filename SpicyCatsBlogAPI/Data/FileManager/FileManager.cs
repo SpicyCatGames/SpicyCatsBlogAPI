@@ -4,23 +4,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SpicyCatsBlogAPI.Data.FileManager
 {
     public class FileManager : IFileManager
     {
         private readonly string _imagePath;
+        private readonly string _notFoundImagePath;
 
         public FileManager(IConfiguration config)
         {
             _imagePath = config["Path:Images"];
+            _notFoundImagePath = config["Path:NotFoundImage"];
         }
 
         public FileStream ImageStream(string image)
         {
             try
             {
-                return new FileStream(Path.Combine(_imagePath, image), FileMode.Open, FileAccess.Read);
+                return GetFile(Path.Combine(_imagePath, image));
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public FileStream NotFoundImageStream()
+        {
+            try
+            {
+                return GetFile(_notFoundImagePath);
             }
             catch
             {
@@ -79,6 +94,11 @@ namespace SpicyCatsBlogAPI.Data.FileManager
                 Console.WriteLine(e.Message);
                 return false;
             }
+        }
+
+        private FileStream GetFile(string path)
+        {
+            return new FileStream(path, FileMode.Open, FileAccess.Read);
         }
 
         private static ProcessImageSettings ImageOptions()

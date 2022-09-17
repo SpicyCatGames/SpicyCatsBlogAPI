@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using SpicyCatsBlogAPI.Data.FileManager;
 using SpicyCatsBlogAPI.Data.Repository;
 using SpicyCatsBlogAPI.Models.Content;
 using System.Security.Claims;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace SpicyCatsBlogAPI.Controllers
 {
@@ -54,8 +52,14 @@ namespace SpicyCatsBlogAPI.Controllers
             }
             catch
             {
-                // TODO send an imagefound.jpeg
-                return null;
+                try
+                {
+                    return new FileStreamResult(_fileManager.NotFoundImageStream(), "image/jpeg");
+                }
+                catch
+                {
+                    return null;
+                }
             }
         }
 
