@@ -1,7 +1,7 @@
 ﻿using SpicyCatsBlogAPI.Models.Auth;
 using SpicyCatsBlogAPI.Models.Content;
 
-namespace SpicyCatsBlogAPI.Data
+namespace SpicyCatsBlogAPI.Data.Repository
 {
     public interface IRepository
     {

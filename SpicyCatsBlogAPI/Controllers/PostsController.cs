@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SpicyCatsBlogAPI.Data;
+using SpicyCatsBlogAPI.Data.Repository;
 using SpicyCatsBlogAPI.Models.Content;
 using System.Security.Claims;
 

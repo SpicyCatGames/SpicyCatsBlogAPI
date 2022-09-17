@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SpicyCatsBlogAPI.Data;
+using SpicyCatsBlogAPI.Data.Repository;
 using SpicyCatsBlogAPI.Models.Auth;
 using SpicyCatsBlogAPI.Services.UserService;
 using Swashbuckle.AspNetCore.Filters;

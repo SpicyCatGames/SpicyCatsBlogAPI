@@ -2,7 +2,7 @@
 using SpicyCatsBlogAPI.Models.Auth;
 using SpicyCatsBlogAPI.Models.Content;
 
-namespace SpicyCatsBlogAPI.Data
+namespace SpicyCatsBlogAPI.Data.Repository
 {
     public class Repository : IRepository
     {
@@ -103,7 +103,7 @@ namespace SpicyCatsBlogAPI.Data
 
             var query = _ctx.Posts.AsQueryable();
 
-            if (!String.IsNullOrEmpty(category))
+            if (!string.IsNullOrEmpty(category))
             {
                 query = query.Where(x => x.Category.Equals(category));
             }
@@ -122,7 +122,7 @@ namespace SpicyCatsBlogAPI.Data
         {
             var query = _ctx.Posts.AsQueryable();
 
-            if (!String.IsNullOrEmpty(category))
+            if (!string.IsNullOrEmpty(category))
             {
                 query = query.Where(x => x.Category.Equals(category));
             }
