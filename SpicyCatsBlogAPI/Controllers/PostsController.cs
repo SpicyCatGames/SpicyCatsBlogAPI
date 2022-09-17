@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using SpicyCatsBlogAPI.Data.FileManager;
 using SpicyCatsBlogAPI.Data.Repository;
 using SpicyCatsBlogAPI.Models.Content;
 using System.Security.Claims;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SpicyCatsBlogAPI.Controllers
 {
@@ -35,7 +37,7 @@ namespace SpicyCatsBlogAPI.Controllers
                     Category = post.Category.ToString(),
                     Created = post.Created,
                     Id = post.Id,
-                    Image = null,
+                    ImageUrl = post.Image,
                     Tags = post.Tags,
                     Author = post.User.Username
                 };
@@ -46,7 +48,15 @@ namespace SpicyCatsBlogAPI.Controllers
         public IActionResult Image(string image)
         {
             var mime = image.Substring(image.LastIndexOf('.') + 1);
-            return new FileStreamResult(_fileManager.ImageStream(image), $"image/{mime}");
+            try
+            {
+                return new FileStreamResult(_fileManager.ImageStream(image), $"image/{mime}");
+            }
+            catch
+            {
+                // TODO send an imagefound.jpeg
+                return null;
+            }
         }
 
         [HttpPost("createpost"), Authorize]
@@ -60,6 +70,10 @@ namespace SpicyCatsBlogAPI.Controllers
                 user.Posts = new List<Post>();
             }
 
+            var imageName = await _fileManager.SaveImage(postDto.Image);
+            if (String.IsNullOrEmpty(imageName))
+                return BadRequest("Could not submit post: image saving failed");
+
             user.Posts.Add(new Post
             {
                 Title = postDto.Title,
@@ -67,7 +81,7 @@ namespace SpicyCatsBlogAPI.Controllers
                 Category = categoryEnum,
                 Created = DateTime.Now,
                 Description = postDto.Description,
-                Image = "",
+                Image = imageName,
                 Tags = postDto.Tags
             });
             try
@@ -81,5 +95,20 @@ namespace SpicyCatsBlogAPI.Controllers
             }
             return Ok();
         }
+
+        //private static IFormFile FileStreamToFormFile(FileStream fs)
+        //{
+        //    if (fs == null) return null;
+
+        //    using (var stream = fs)
+        //    {
+        //        FormFile file = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
+        //        {
+        //            Headers = new HeaderDictionary(),
+        //            ContentType = "image/jpeg"
+        //        };
+        //        return file;
+        //    }
+        //}
     }
 }
