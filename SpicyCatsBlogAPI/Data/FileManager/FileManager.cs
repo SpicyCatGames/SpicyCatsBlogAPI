@@ -18,7 +18,14 @@ namespace SpicyCatsBlogAPI.Data.FileManager
 
         public FileStream ImageStream(string image)
         {
-            return new FileStream(Path.Combine(_imagePath, image), FileMode.Open, FileAccess.Read);
+            try
+            {
+                return new FileStream(Path.Combine(_imagePath, image), FileMode.Open, FileAccess.Read);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public async Task<string> SaveImage(IFormFile image)
