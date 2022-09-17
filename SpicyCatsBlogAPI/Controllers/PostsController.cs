@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SpicyCatsBlogAPI.Data.FileManager;
 using SpicyCatsBlogAPI.Data.Repository;
 using SpicyCatsBlogAPI.Models.Content;
 using System.Security.Claims;
@@ -12,9 +13,12 @@ namespace SpicyCatsBlogAPI.Controllers
     {
         private readonly IRepository _repository;
 
-        public PostsController(IRepository repository)
+        private readonly IFileManager _fileManager;
+
+        public PostsController(IRepository repository, IFileManager fileManager)
         {
             _repository = repository;
+            _fileManager = fileManager;
         }
 
         [HttpGet("getposts")]
@@ -31,11 +35,18 @@ namespace SpicyCatsBlogAPI.Controllers
                     Category = post.Category.ToString(),
                     Created = post.Created,
                     Id = post.Id,
-                    Image = post.Image,
+                    Image = null,
                     Tags = post.Tags,
                     Author = post.User.Username
                 };
             });
+        }
+
+        [HttpGet("Image/{image}")]
+        public IActionResult Image(string image)
+        {
+            var mime = image.Substring(image.LastIndexOf('.') + 1);
+            return new FileStreamResult(_fileManager.ImageStream(image), $"image/{mime}");
         }
 
         [HttpPost("createpost"), Authorize]
@@ -56,7 +67,7 @@ namespace SpicyCatsBlogAPI.Controllers
                 Category = categoryEnum,
                 Created = DateTime.Now,
                 Description = postDto.Description,
-                Image = postDto.Image,
+                Image = "",
                 Tags = postDto.Tags
             });
             try
