@@ -32,7 +32,8 @@ namespace SpicyCatsBlogAPI.Controllers
                     Created = post.Created,
                     Id = post.Id,
                     Image = post.Image,
-                    Tags = post.Tags
+                    Tags = post.Tags,
+                    Author = post.User.Username
                 };
             });
         }

@@ -12,6 +12,7 @@
         public string Tags { get; set; } = "";
         public string Category { get; set; } = "";
 
+        public string Author { get; set; } = "";
         public DateTime Created { get; set; } = DateTime.Now;
     }
 }
