@@ -115,7 +115,8 @@ namespace SpicyCatsBlogAPI.Data.Repository
 
         public Post GetPost(string id)
         {
-            return _ctx.Posts.FirstOrDefault(p => p.Id.Equals(id));
+            var posts = _ctx.Posts.Where(p => p.Id.Equals(id)).ToList();
+            return posts.FirstOrDefault(p => p.Id.Equals(id), null);
         }
 
         public int GetPostCount(string category)
