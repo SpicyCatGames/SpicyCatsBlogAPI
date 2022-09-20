@@ -42,6 +42,26 @@ namespace SpicyCatsBlogAPI.Controllers
             });
         }
 
+        [HttpGet("Post/{id}")]
+        public async Task<ActionResult<PostDto>> GetPost(string id)
+        {
+            var post = await _repository.GetPost(id);
+
+            PostDto postDto = new PostDto
+            {
+                Title = post.Title,
+                Description = post.Description,
+                Body = post.Body,
+                Category = post.Category.ToString(),
+                Created = post.Created,
+                Id = post.Id,
+                ImageUrl = post.Image,
+                Tags = post.Tags,
+                Author = post.User.Username
+            };
+            return postDto;
+        }
+
         [HttpGet("Image")]
         public IActionResult Image(string image)
         {
