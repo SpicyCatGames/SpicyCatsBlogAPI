@@ -113,9 +113,9 @@ namespace SpicyCatsBlogAPI.Data.Repository
             return await query.Skip(skipAmout).Take(postsPerPage).ToListAsync();
         }
 
-        public Post GetPost(string id)
+        public async Task<Post> GetPost(string id)
         {
-            var posts = _ctx.Posts.Where(p => p.Id.Equals(id)).ToList();
+            var posts = await _ctx.Posts.Where(p => p.Id.Equals(id)).Include(p => p.User).ToListAsync();
             return posts.FirstOrDefault(p => p.Id.Equals(id), null);
         }
 
