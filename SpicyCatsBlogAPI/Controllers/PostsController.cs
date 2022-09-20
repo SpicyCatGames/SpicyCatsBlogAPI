@@ -74,9 +74,13 @@ namespace SpicyCatsBlogAPI.Controllers
                 user.Posts = new List<Post>();
             }
 
-            var imageName = await _fileManager.SaveImage(postDto.Image);
-            if (String.IsNullOrEmpty(imageName))
-                return BadRequest("Could not submit post: image saving failed");
+            var imageName = "none";
+            if (postDto.Image != null)
+            {
+                imageName = await _fileManager.SaveImage(postDto.Image);
+                if (String.IsNullOrEmpty(imageName))
+                    return BadRequest("Could not submit post: image saving failed");
+            }
 
             user.Posts.Add(new Post
             {
