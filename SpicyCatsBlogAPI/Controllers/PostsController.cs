@@ -74,7 +74,7 @@ namespace SpicyCatsBlogAPI.Controllers
                 user.Posts = new List<Post>();
             }
 
-            var imageName = "none";
+            var imageName = "";
             if (postDto.Image != null)
             {
                 imageName = await _fileManager.SaveImage(postDto.Image);
