@@ -55,10 +55,14 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(
         builder =>
         {
-            builder.WithOrigins("http://localhost:3000", "http://localhost")
-                                .AllowCredentials()
-                                .AllowAnyHeader()
-                                .AllowAnyMethod();
+            // TODO add URL to frontend
+            builder.WithOrigins(
+                "https://spicycatgames.github.io", 
+                "http://localhost:3000", 
+                "http://localhost")
+                    .AllowCredentials()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
         });
 });
 
