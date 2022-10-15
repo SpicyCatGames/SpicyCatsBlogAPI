@@ -14,6 +14,6 @@
         public string Category { get; set; } = "";
 
         public string Author { get; set; } = "";
-        public DateTime Created { get; set; } = DateTime.Now;
+        public string Created { get; set; } = "";
     }
 }
