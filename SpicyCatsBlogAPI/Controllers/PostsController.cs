@@ -107,7 +107,7 @@ namespace SpicyCatsBlogAPI.Controllers
                 Title = postDto.Title,
                 Body = postDto.Body,
                 Category = categoryEnum,
-                Created = DateTime.Now,
+                Created = DateTime.Now.ToUniversalTime(),
                 Description = postDto.Description,
                 Image = imageName,
                 Tags = postDto.Tags
