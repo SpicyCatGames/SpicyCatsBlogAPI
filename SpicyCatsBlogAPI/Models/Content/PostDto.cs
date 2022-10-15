@@ -6,6 +6,9 @@
 
         public string Title { get; set; } = "";
         public string Body { get; set; } = "";
+
+        // in Post, use either Image (to save image file) or ImageUrl(to save only external image link to db)
+        // in get, imageUrl has the filename of image and Image is null
         public IFormFile Image { get; set; } = null;
         public string ImageUrl { get; set; } = "";
 
