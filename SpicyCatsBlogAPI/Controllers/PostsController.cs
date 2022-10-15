@@ -33,9 +33,9 @@ namespace SpicyCatsBlogAPI.Controllers
                     Description = post.Description,
                     Body = post.Body,
                     Category = post.Category.ToString(),
-                    Created = post.Created.ToString(),
+                    Created = post.Created,
                     Id = post.Id,
-                    ImageUrl = $"{this.Request.Scheme}://{this.Request.Host}/api/Posts/Image?image={post.Image}",
+                    ImageUrl = post.Image,
                     Tags = post.Tags,
                     Author = post.User.Username
                 };
@@ -53,9 +53,9 @@ namespace SpicyCatsBlogAPI.Controllers
                 Description = post.Description,
                 Body = post.Body,
                 Category = post.Category.ToString(),
-                Created = post.Created.ToString(),
+                Created = post.Created,
                 Id = post.Id,
-                ImageUrl = $"{this.Request.Scheme}://{this.Request.Host}/api/Posts/Image?image={post.Image}",
+                ImageUrl = post.Image,
                 Tags = post.Tags,
                 Author = post.User.Username
             };
