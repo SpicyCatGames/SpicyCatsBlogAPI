@@ -58,6 +58,8 @@ builder.Services.AddCors(options =>
             // TODO add URL to frontend
             builder.WithOrigins(
                 "https://spicycatgames.github.io", 
+                "https://spicycat.tech",
+                "https://www.spicycat.tech",
                 "http://localhost:3000", 
                 "http://localhost")
                     .AllowCredentials()
