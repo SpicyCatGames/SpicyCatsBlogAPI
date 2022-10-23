@@ -58,7 +58,7 @@ namespace SpicyCatsBlogAPI.Controllers
         //}
 
         [HttpPost("register")]
-        public async Task<ActionResult<UserDto>> Register(UserDto request)
+        public async Task<ActionResult<UserDto>> Register(UserRegisterDto request)
         {
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
