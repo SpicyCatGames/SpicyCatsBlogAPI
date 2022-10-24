@@ -80,13 +80,13 @@ namespace SpicyCatsBlogAPI.Controllers
 
             if (!registrationSuccessful)
             {
-                return BadRequest("username already exists");
+                return BadRequest(new APIErrorResult("username already exists"));
             }
             if (await _repo.SaveChangesAsync())
             {
                 return Ok($"Role:{user.Role.ToString()}");
             }
-            return BadRequest("registration failed");
+            return BadRequest(new APIErrorResult("registration failed"));
         }
 
         [HttpPost("login")]
