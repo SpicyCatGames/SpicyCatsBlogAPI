@@ -62,8 +62,8 @@ namespace SpicyCatsBlogAPI.Controllers
 
         [HttpPost("register")]
         [ValidateModel]
-        [ProducesResponseType(typeof(CustomErrorResult), 400)]
-        [ProducesResponseType(typeof(CustomErrorResult), 422)]
+        [ProducesResponseType(typeof(APIErrorResult), 400)]
+        [ProducesResponseType(typeof(APIErrorResult), 422)]
         public async Task<ActionResult> Register(UserRegisterDto request)
         {
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
