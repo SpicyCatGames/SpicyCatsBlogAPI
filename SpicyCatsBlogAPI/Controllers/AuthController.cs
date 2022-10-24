@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SpicyCatsBlogAPI.Data.Repository;
+using SpicyCatsBlogAPI.Models;
 using SpicyCatsBlogAPI.Models.Auth;
 using SpicyCatsBlogAPI.Services.UserService;
 using SpicyCatsBlogAPI.Utils.ActionFilters.Validation;
+using Swashbuckle.AspNetCore.Filters;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -60,6 +62,8 @@ namespace SpicyCatsBlogAPI.Controllers
 
         [HttpPost("register")]
         [ValidateModel]
+        [ProducesResponseType(typeof(CustomErrorResult), 400)]
+        [ProducesResponseType(typeof(CustomErrorResult), 422)]
         public async Task<ActionResult> Register(UserRegisterDto request)
         {
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
