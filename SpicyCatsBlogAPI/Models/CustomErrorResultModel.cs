@@ -5,16 +5,16 @@ using Newtonsoft.Json;
 
 namespace SpicyCatsBlogAPI.Models
 {
-    public class CustomErrorResultModel
+    public class CustomErrorResult
     {
         public List<string> Errors { get; }
-        public CustomErrorResultModel(ModelStateDictionary modelState)
+        public CustomErrorResult(ModelStateDictionary modelState)
         {
             Errors = modelState.Keys
                     .SelectMany(key => modelState[key].Errors.Select(x => $"{key}: {x.ErrorMessage}"))
                     .ToList();
         }
-        public CustomErrorResultModel(string error)
+        public CustomErrorResult(string error)
         {
             Errors.Add(error);
         }

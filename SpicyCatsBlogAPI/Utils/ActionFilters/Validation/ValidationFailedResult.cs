@@ -7,7 +7,7 @@ namespace SpicyCatsBlogAPI.Utils.ActionFilters.Validation
     public class ValidationFailedResult : ObjectResult
     {
         public ValidationFailedResult(ModelStateDictionary modelState)
-            : base(new CustomErrorResultModel(modelState))
+            : base(new CustomErrorResult(modelState))
         {
             StatusCode = StatusCodes.Status422UnprocessableEntity; //change the http status code to 422.
         }
