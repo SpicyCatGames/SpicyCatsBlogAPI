@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using SpicyCatsBlogAPI.Data.Repository;
 using SpicyCatsBlogAPI.Models.Auth;
 using SpicyCatsBlogAPI.Services.UserService;
+using SpicyCatsBlogAPI.Utils.ActionFilters.Validation;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -58,6 +59,7 @@ namespace SpicyCatsBlogAPI.Controllers
         //}
 
         [HttpPost("register")]
+        [ValidateModel]
         public async Task<ActionResult> Register(UserRegisterDto request)
         {
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
