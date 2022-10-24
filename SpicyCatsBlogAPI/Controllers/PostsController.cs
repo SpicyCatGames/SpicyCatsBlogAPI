@@ -84,6 +84,7 @@ namespace SpicyCatsBlogAPI.Controllers
         }
 
         [HttpPost("createpost"), Authorize]
+        // [Consumes("multipart/form-data")]
         public async Task<ActionResult> CreatePost([FromForm] PostDto postDto)
         {
             var user = await _repository.GetUserWPostsAsync(User.FindFirstValue(ClaimTypes.Name));
