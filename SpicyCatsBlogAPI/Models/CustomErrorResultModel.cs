@@ -14,5 +14,9 @@ namespace SpicyCatsBlogAPI.Models
                     .SelectMany(key => modelState[key].Errors.Select(x => $"{key}: {x.ErrorMessage}"))
                     .ToList();
         }
+        public CustomErrorResultModel(string error)
+        {
+            Errors.Add(error);
+        }
     }
 }
