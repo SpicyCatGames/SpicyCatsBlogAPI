@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using SpicyCatsBlogAPI.Models;
 
 namespace SpicyCatsBlogAPI.Utils.ActionFilters.Validation
 {
