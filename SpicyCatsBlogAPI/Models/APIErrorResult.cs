@@ -7,7 +7,7 @@ namespace SpicyCatsBlogAPI.Models
 {
     public class APIErrorResult
     {
-        public List<string> Errors { get; }
+        public List<string> Errors { get; } = new List<string>();
         public APIErrorResult(ModelStateDictionary modelState)
         {
             Errors = modelState.Keys
