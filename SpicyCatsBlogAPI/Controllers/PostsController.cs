@@ -63,6 +63,7 @@ namespace SpicyCatsBlogAPI.Controllers
         }
 
         [HttpGet("Image")]
+        [ResponseCache(VaryByHeader = "User-Agent", Duration = 30)]
         public IActionResult Image(string image)
         {
             try

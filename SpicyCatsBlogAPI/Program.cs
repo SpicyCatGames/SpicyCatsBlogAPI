@@ -33,6 +33,7 @@ builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
         return result;
     };
 });
+builder.Services.AddResponseCaching();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -91,6 +92,8 @@ app.UseSwaggerUI();
 app.UseCors();
 
 app.UseHttpsRedirection();
+
+app.UseResponseCaching();
 
 app.UseAuthentication();
 
