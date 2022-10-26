@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SpicyCatsBlogAPI.Data.Repository;
-using SpicyCatsBlogAPI.Models;
 using SpicyCatsBlogAPI.Models.Auth;
 using SpicyCatsBlogAPI.Services.UserService;
 using SpicyCatsBlogAPI.Utils.ActionFilters.Validation;
@@ -62,8 +61,8 @@ namespace SpicyCatsBlogAPI.Controllers
 
         [HttpPost("register")]
         [ValidateModel]
-        [ProducesResponseType(typeof(APIErrorResult), 400)]
-        [ProducesResponseType(typeof(APIErrorResult), 422)]
+        [ProducesResponseType(typeof(ValidationErrorResponse), 400)]
+        [ProducesResponseType(typeof(ValidationErrorResponse), 422)]
         public async Task<ActionResult> Register(UserRegisterDto request)
         {
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -80,13 +79,13 @@ namespace SpicyCatsBlogAPI.Controllers
 
             if (!registrationSuccessful)
             {
-                return BadRequest(new APIErrorResult("username already exists"));
+                return BadRequest(new ValidationErrorResponse("username already exists"));
             }
             if (await _repo.SaveChangesAsync())
             {
                 return Ok($"Role:{user.Role.ToString()}");
             }
-            return BadRequest(new APIErrorResult("registration failed"));
+            return BadRequest(new ValidationErrorResponse("registration failed"));
         }
 
         [HttpPost("login")]
