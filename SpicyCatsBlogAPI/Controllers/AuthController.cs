@@ -109,6 +109,8 @@ namespace SpicyCatsBlogAPI.Controllers
             var refreshToken = GenerateRefreshToken();
             await SetRefreshToken(user, refreshToken);
 
+            await Task.Delay(new Random().Next(0, 200));
+
             return Ok(token);
         }
 
