@@ -23,10 +23,10 @@ namespace SpicyCatsBlogAPI.Utils.ActionFilters.Validation
     public class ValidationErrorModel
     {
         public string Field { get; set; }
-        public string Error { get; set; }
+        public string Message { get; set; }
         public ValidationErrorModel(string error, string field = "")
         {
-            Error = error;
+            Message = error;
             Field = field;
         }
     }
