@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using SpicyCatsBlogAPI.Data.FileManager;
 using SpicyCatsBlogAPI.Data.Repository;
+using SpicyCatsBlogAPI.Models;
 using SpicyCatsBlogAPI.Models.Content;
+using SpicyCatsBlogAPI.Utils.ActionFilters.Validation;
 using System.Security.Claims;
 
 namespace SpicyCatsBlogAPI.Controllers
@@ -85,7 +87,9 @@ namespace SpicyCatsBlogAPI.Controllers
         }
 
         [HttpPost("createpost"), Authorize]
-        // [Consumes("multipart/form-data")]
+        [ValidateModel]
+        [ProducesResponseType(typeof(APIErrorResult), 400)]
+        [ProducesResponseType(typeof(APIErrorResult), 422)]
         public async Task<ActionResult> CreatePost([FromForm] PostDto postDto)
         {
             var user = await _repository.GetUserWPostsAsync(User.FindFirstValue(ClaimTypes.Name));
@@ -101,7 +105,7 @@ namespace SpicyCatsBlogAPI.Controllers
             {
                 imageName = await _fileManager.SaveImage(postDto.Image);
                 if (String.IsNullOrEmpty(imageName))
-                    return BadRequest("Could not submit post: image saving failed");
+                    return BadRequest(new APIErrorResult("Could not submit post: image saving failed"));
             }
 
             user.Posts.Add(new Post
@@ -121,7 +125,7 @@ namespace SpicyCatsBlogAPI.Controllers
             }
             catch
             {
-                return BadRequest("Post could not be saved successfully");
+                return BadRequest(new APIErrorResult("Post could not be saved successfully"));
             }
             return Ok();
         }
