@@ -72,7 +72,6 @@ builder.Services.AddCors(options =>
                 "https://spicycatgames.github.io", 
                 "https://spicycat.tech",
                 "https://www.spicycat.tech",
-                "https://blog.spicycat.tech",
                 "http://localhost:3000", 
                 "http://localhost")
                     .AllowCredentials()
