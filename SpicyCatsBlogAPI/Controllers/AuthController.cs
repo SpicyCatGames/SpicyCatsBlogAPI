@@ -79,7 +79,7 @@ namespace SpicyCatsBlogAPI.Controllers
 
             if (!registrationSuccessful)
             {
-                return BadRequest(new ValidationErrorResponse("username already exists"));
+                return BadRequest(new ValidationErrorResponse("username already exists", nameof(request.Username).ToLower()));
             }
             if (await _repo.SaveChangesAsync())
             {
