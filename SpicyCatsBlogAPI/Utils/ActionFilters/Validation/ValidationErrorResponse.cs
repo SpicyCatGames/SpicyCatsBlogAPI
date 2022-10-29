@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Newtonsoft.Json;
-using SpicyCatsBlogAPI.Models.Error;
 
 // https://learn.microsoft.com/en-us/answers/questions/620570/net-core-web-api-model-validation-error-response-t.html
 
 namespace SpicyCatsBlogAPI.Utils.ActionFilters.Validation
 {
-    public class ValidationErrorResponse : IErrorResponse<ValidationErrorModel>
+    public class ValidationErrorResponse
     {
         public List<ValidationErrorModel> Errors { get; } = new List<ValidationErrorModel>();
 
@@ -16,17 +14,17 @@ namespace SpicyCatsBlogAPI.Utils.ActionFilters.Validation
                     .SelectMany(key => modelState[key].Errors.Select(x => new ValidationErrorModel(x.ErrorMessage, key)))
                     .ToList();
         }
-        public ValidationErrorResponse(string error)
+        public ValidationErrorResponse(string error, string field = "")
         {
-            Errors.Add(new ValidationErrorModel(error));
+            Errors.Add(new ValidationErrorModel(error, field));
         }
     }
 
-    public class ValidationErrorModel : IErrorResponseModel
+    public class ValidationErrorModel
     {
         public string Field { get; set; }
         public string Message { get; set; }
-        public ValidationErrorModel(string error, string field = "")
+        public ValidationErrorModel(string error, string field)
         {
             Message = error;
             Field = field;
