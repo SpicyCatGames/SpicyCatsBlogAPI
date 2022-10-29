@@ -5,6 +5,7 @@ using SpicyCatsBlogAPI.Data.Repository;
 using SpicyCatsBlogAPI.Models.Content;
 using SpicyCatsBlogAPI.Utils.ActionFilters.Validation;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 
 namespace SpicyCatsBlogAPI.Controllers
 {
@@ -91,6 +92,12 @@ namespace SpicyCatsBlogAPI.Controllers
         [ProducesResponseType(typeof(ValidationErrorResponse), 422)]
         public async Task<ActionResult> CreatePost([FromForm] PostDto postDto)
         {
+            string bodyWithoutTags = Regex.Replace(postDto.Body, @"<([\w\-/]+)( +[\w\-]+(=(('[^']*')|(""[^""]*"")))?)* *>", string.Empty);
+            if (bodyWithoutTags.Length == 0)
+            {
+                return BadRequest(new ValidationErrorResponse("Post body cannot be empty", nameof(postDto.Body).ToLower()));
+            }
+
             var user = await _repository.GetUserWPostsAsync(User.FindFirstValue(ClaimTypes.Name));
             Enum.TryParse<PostCategory>(postDto.Category, out var categoryEnum);
 
