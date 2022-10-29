@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SpicyCatsBlogAPI.Data.FileManager;
 using SpicyCatsBlogAPI.Data.Repository;
 using SpicyCatsBlogAPI.Models.Content;
+using SpicyCatsBlogAPI.Utils;
 using SpicyCatsBlogAPI.Utils.ActionFilters.Validation;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
@@ -36,7 +37,7 @@ namespace SpicyCatsBlogAPI.Controllers
                     Body = post.Body,
                     Category = post.Category.ToString(),
                     Created = post.Created.ToString(),
-                    Id = post.Id,
+                    Id = GuidEncoder.Encode(post.Id),
                     ImageUrl = post.Image,
                     Tags = post.Tags,
                     Author = post.User.Username
@@ -47,7 +48,8 @@ namespace SpicyCatsBlogAPI.Controllers
         [HttpGet("Post/{id}")]
         public async Task<ActionResult<PostDto>> GetPost(string id)
         {
-            var post = await _repository.GetPost(id);
+            var decodedID = GuidEncoder.Decode(id).ToString();
+            var post = await _repository.GetPost(decodedID);
 
             PostDto postDto = new PostDto
             {
@@ -56,7 +58,7 @@ namespace SpicyCatsBlogAPI.Controllers
                 Body = post.Body,
                 Category = post.Category.ToString(),
                 Created = post.Created.ToString(),
-                Id = post.Id,
+                Id = id,
                 ImageUrl = post.Image,
                 Tags = post.Tags,
                 Author = post.User.Username
