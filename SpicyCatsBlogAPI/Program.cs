@@ -62,22 +62,31 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         }
     );
+
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(
+    if (builder.Environment.IsDevelopment())
+    {
+        options.AddDefaultPolicy(builder =>
+        {
+            builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
+        });
+    }
+    else
+    {
+        options.AddDefaultPolicy(
         builder =>
         {
-            // TODO add URL to frontend
             builder.WithOrigins(
-                "https://spicycatgames.github.io", 
+                "https://spicycatgames.github.io",
                 "https://spicycat.tech",
-                "https://www.spicycat.tech",
-                "http://localhost:3000", 
-                "http://localhost")
+                "https://www.spicycat.tech")
                     .AllowCredentials()
                     .AllowAnyHeader()
                     .AllowAnyMethod();
         });
+    }
+    
 });
 
 var app = builder.Build();
