@@ -108,7 +108,7 @@ namespace SpicyCatsBlogAPI.Data.Repository
                 query = query.Where(x => x.Category.Equals(category));
             }
 
-            query = query.Include(post => post.User);
+            query = query.OrderByDescending(x => x.Created).Include(post => post.User);
 
             return await query.Skip(skipAmout).Take(postsPerPage).ToListAsync();
         }
