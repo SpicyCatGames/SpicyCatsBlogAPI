@@ -25,8 +25,7 @@ namespace SpicyCatsBlogAPI.Utils.GuidEncoder
         }
         public string Decode2Str(string encoded)
         {
-            byte[] buffer = DecodeToByte(encoded);
-            return Encoding.UTF8.GetString(buffer);
+            return Decode(encoded).ToString();
         }
         private byte[] DecodeToByte(string encoded)
         {
