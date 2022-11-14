@@ -50,7 +50,7 @@ namespace SpicyCatsBlogAPI.Controllers
         [HttpGet("Post/{id}")]
         public async Task<ActionResult<PostDto>> GetPost(string id)
         {
-            var decodedID = _guidEncoder.Decode(id).ToString();
+            var decodedID = _guidEncoder.Decode2Str(id);
             var post = await _repository.GetPost(decodedID);
 
             PostDto postDto = new PostDto
