@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using SpicyCatsBlogAPI.Data.FileManager;
 using SpicyCatsBlogAPI.Data.Repository;
 using SpicyCatsBlogAPI.Models.Content;
-using SpicyCatsBlogAPI.Utils;
 using SpicyCatsBlogAPI.Utils.ActionFilters.Validation;
+using SpicyCatsBlogAPI.Utils.GuidEncoder;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 
@@ -17,11 +17,13 @@ namespace SpicyCatsBlogAPI.Controllers
         private readonly IRepository _repository;
 
         private readonly IFileManager _fileManager;
+        private readonly IGuidEncoder _guidEncoder;
 
-        public PostsController(IRepository repository, IFileManager fileManager)
+        public PostsController(IRepository repository, IFileManager fileManager, IGuidEncoder guidEncoder)
         {
             _repository = repository;
             _fileManager = fileManager;
+            _guidEncoder = guidEncoder;
         }
 
         [HttpGet("getposts")]
@@ -37,7 +39,7 @@ namespace SpicyCatsBlogAPI.Controllers
                     Body = post.Body,
                     Category = post.Category.ToString(),
                     Created = post.Created.ToString(),
-                    Id = GuidEncoder.Encode(post.Id),
+                    Id = _guidEncoder.Encode(post.Id),
                     ImageUrl = post.Image,
                     Tags = post.Tags,
                     Author = post.User.Username
@@ -48,7 +50,7 @@ namespace SpicyCatsBlogAPI.Controllers
         [HttpGet("Post/{id}")]
         public async Task<ActionResult<PostDto>> GetPost(string id)
         {
-            var decodedID = GuidEncoder.Decode(id).ToString();
+            var decodedID = _guidEncoder.Decode(id).ToString();
             var post = await _repository.GetPost(decodedID);
 
             PostDto postDto = new PostDto

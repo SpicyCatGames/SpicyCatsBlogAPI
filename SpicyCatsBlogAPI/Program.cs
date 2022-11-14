@@ -8,6 +8,7 @@ using SpicyCatsBlogAPI.Data.Repository;
 using SpicyCatsBlogAPI.Models.Auth;
 using SpicyCatsBlogAPI.Services.UserService;
 using SpicyCatsBlogAPI.Utils.ActionFilters.Validation;
+using SpicyCatsBlogAPI.Utils.GuidEncoder;
 using Swashbuckle.AspNetCore.Filters;
 using System.Net.Mime;
 using System.Text;
@@ -23,6 +24,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     );
 });
 builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddSingleton<IGuidEncoder, GuidEncoder>();
 builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
 {
     options.InvalidModelStateResponseFactory = context =>
