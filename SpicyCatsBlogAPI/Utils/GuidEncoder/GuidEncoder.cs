@@ -1,16 +1,16 @@
 ﻿using System.Text;
 
-namespace SpicyCatsBlogAPI.Utils
+namespace SpicyCatsBlogAPI.Utils.GuidEncoder
 {
-    public static class GuidEncoder
+    public class GuidEncoder : IGuidEncoder
     {
-        public static string Encode(string guidText)
+        public string Encode(string guidText)
         {
             Guid guid = new Guid(guidText);
             return Encode(guid);
         }
 
-        public static string Encode(Guid guid)
+        public string Encode(Guid guid)
         {
             string enc = Convert.ToBase64String(guid.ToByteArray());
             enc = enc.Replace("/", "_");
@@ -18,17 +18,17 @@ namespace SpicyCatsBlogAPI.Utils
             return enc.Substring(0, 22);
         }
 
-        public static Guid Decode(string encoded)
+        public Guid Decode(string encoded)
         {
             byte[] buffer = DecodeToByte(encoded);
             return new Guid(buffer);
         }
-        public static string Decode2Str(string encoded)
+        public string Decode2Str(string encoded)
         {
             byte[] buffer = DecodeToByte(encoded);
             return Encoding.UTF8.GetString(buffer);
         }
-        private static byte[] DecodeToByte(string encoded)
+        private byte[] DecodeToByte(string encoded)
         {
             encoded = encoded.Replace("_", "/");
             encoded = encoded.Replace("-", "+");
